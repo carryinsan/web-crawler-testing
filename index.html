@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="ArixAI Live Search Crawler tester and user guide">
+<title>ArixAI Live Search — Crawler Console</title>
+<style>
+:root{--bg:#07111f;--bg2:#0b1628;--card:#0e1b2f;--card2:#111f35;--line:#223552;--text:#edf4ff;--muted:#98a9c3;--accent:#62a7ff;--accent2:#7ee0c6;--warn:#f5c96a;--bad:#ff7b87;--good:#68dda9;--shadow:0 18px 60px rgba(0,0,0,.28)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#07111f 0%,#081425 35%,#06101c 100%);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{max-width:1440px;margin:auto;padding:22px}
+.nav{position:sticky;top:0;z-index:20;background:rgba(7,17,31,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.05)}
+.navin{max-width:1440px;margin:auto;padding:12px 22px;display:flex;gap:16px;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:10px;align-items:center;font-weight:800;letter-spacing:.2px}.mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#04111d;font-weight:900}.brand small{display:block;color:var(--muted);font-weight:600}
+.links{display:flex;gap:16px;flex-wrap:wrap}.links a{color:#cad7ea;font-size:13px}
+.hero{padding:46px 0 25px;display:grid;grid-template-columns:1.35fr .9fr;gap:20px}.hero h1{font-size:clamp(34px,5vw,62px);line-height:1.02;margin:0 0 16px;letter-spacing:-1.6px}.hero p{max-width:820px;color:#b5c4d8;font-size:17px}.pillrow{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}.pill{border:1px solid var(--line);background:#0b172a;padding:7px 11px;border-radius:999px;color:#b9c8dc;font-size:12px}.heroCard{background:linear-gradient(180deg,#0d1c31,#0a1728);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:380px 1fr;gap:18px;align-items:start}.card{background:rgba(12,25,43,.9);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.card h2,.card h3{margin:0 0 10px}.pad{padding:18px}
+label{display:block;color:#c7d4e7;font-size:12px;font-weight:700;margin:12px 0 6px;text-transform:uppercase;letter-spacing:.45px}.input,.select,.textarea{width:100%;background:#091527;border:1px solid #2a3e5e;color:var(--text);border-radius:11px;padding:11px 12px;outline:none}.input:focus,.select:focus,.textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(98,167,255,.12)}
+.searchbar{display:flex;gap:8px}.searchbar .input{flex:1}.btn{border:1px solid #2d4568;background:#162b49;color:#eef6ff;border-radius:11px;padding:10px 13px;font-weight:800}.btn:hover{filter:brightness(1.08)}.btn.primary{background:linear-gradient(135deg,#4f95f7,#67c8bd);color:#05111f;border-color:transparent}.btn.ghost{background:transparent}.btn.danger{border-color:#5a2c39;background:#26151c;color:#ffb3bc}.btn:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:8px;align-items:center}.row.wrap{padding:0}.split{display:grid;grid-template-columns:1fr 1fr;gap:10px}.checks{display:grid;gap:8px;margin-top:10px}.check{display:flex;gap:9px;align-items:center;color:#c1cedf;font-size:13px}.check input{accent-color:var(--accent)}
+.rangeRow{display:grid;grid-template-columns:1fr 55px;gap:10px;align-items:center}.rangeVal{text-align:center;padding:8px;background:#091527;border:1px solid #2a3e5e;border-radius:9px;color:#dce8f8;font-weight:800}.hint{color:var(--muted);font-size:12px;margin-top:6px}
+.statusGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{padding:13px;border:1px solid var(--line);background:#0a1728;border-radius:12px}.stat b{display:block;font-size:21px}.stat span{font-size:11px;color:var(--muted)}.dot{width:8px;height:8px;border-radius:50%;display:inline-block;background:#7587a2;margin-right:5px}.dot.good{background:var(--good);box-shadow:0 0 14px rgba(104,221,169,.55)}.dot.warn{background:var(--warn)}.dot.bad{background:var(--bad)}
+.console{display:grid;grid-template-columns:1fr 1fr;gap:12px}.log{background:#050d17;border:1px solid #17283f;border-radius:12px;height:190px;overflow:auto;padding:12px;font:12px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;color:#a8bad2}.log div{margin-bottom:5px}.log .ok{color:var(--good)}.log .warn{color:var(--warn)}.log .bad{color:var(--bad)}
+.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.toolbarLeft,.toolbarRight{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.badge{padding:5px 9px;border-radius:999px;border:1px solid var(--line);font-size:11px;color:#becce0;background:#091527}.filterBtn{padding:7px 10px}.filterBtn.active{border-color:var(--accent);color:#e8f3ff;background:#102846}
+.results{display:grid;gap:11px}.result{border:1px solid var(--line);border-radius:14px;background:#0a1728;padding:14px}.resultHead{display:flex;gap:10px;justify-content:space-between;align-items:flex-start}.resultTitle{font-size:16px;font-weight:800;line-height:1.35;margin:0}.rank{min-width:33px;height:29px;border-radius:9px;background:#132642;display:grid;place-items:center;color:#b8cff0;font-weight:900;font-size:12px}.resultMeta{color:#8194af;font-size:11px;margin:6px 0}.snippet{color:#c2cede;font-size:13px}.resultActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.small{font-size:11px;padding:7px 9px}.relevance{margin-top:10px}.bar{height:7px;background:#07101d;border-radius:999px;overflow:hidden;border:1px solid #17263b}.bar i{height:100%;display:block;background:linear-gradient(90deg,#5c9cff,#72d6bb)}.relText{font-size:11px;color:#a9bad0;margin-bottom:5px;display:flex;justify-content:space-between}
+.details{margin-top:10px;border-top:1px solid #1b2d46;padding-top:10px;display:none}.details.open{display:block}.content{white-space:pre-wrap;color:#bccce1;font:12px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;background:#050d17;padding:12px;border-radius:11px;border:1px solid #17283f;max-height:330px;overflow:auto}.mono{font:12px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;background:#050d17;padding:13px;border-radius:12px;border:1px solid #17283f;overflow:auto}
+.section{margin-top:24px}.guide{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.guideItem{padding:15px;border:1px solid var(--line);background:#0a1728;border-radius:14px}.guideItem b{display:block;margin-bottom:5px}.code{background:#050d17;border:1px solid #17283f;border-radius:12px;padding:13px;font:12px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;overflow:auto}
+.testTable{width:100%;border-collapse:collapse}.testTable th,.testTable td{padding:10px;border-bottom:1px solid #1b2d46;text-align:left;font-size:12px;vertical-align:top}.testTable th{color:#aabbd0}
+.empty{padding:34px;text-align:center;color:#8092ac;border:1px dashed #243854;border-radius:14px}.footer{padding:32px 0 50px;color:#7890ac;font-size:12px}
+.toast{position:fixed;right:20px;bottom:20px;background:#081628;border:1px solid #2a4467;color:#e9f3ff;padding:12px 14px;border-radius:12px;box-shadow:var(--shadow);display:none;max-width:420px;z-index:40}.toast.show{display:block}
+@media(max-width:1050px){.hero,.grid{grid-template-columns:1fr}.statusGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:680px){.wrap,.navin{padding-left:14px;padding-right:14px}.hero{padding-top:30px}.console,.guide{grid-template-columns:1fr}.statusGrid{grid-template-columns:1fr 1fr}.searchbar{flex-direction:column}.split{grid-template-columns:1fr}.links{display:none}}
+</style>
+</head>
+<body>
+<div class="nav"><div class="navin"><div class="brand"><div class="mark">A</div><div>ArixAI Live Search<small>crawler.js control center</small></div></div><div class="links"><a href="#search">Search</a><a href="#status">Status</a><a href="#tests">Tests</a><a href="#guide">Guide</a><a href="#api">API</a></div></div></div>
+<main class="wrap">
+<section class="hero">
+  <div>
+    <div class="pillrow"><span class="pill">Keyless core</span><span class="pill">Edge-ready</span><span class="pill">1–40 results</span><span class="pill">News + video + gov + docs</span><span class="pill">Optional Groq AI</span></div>
+    <h1>Search the live web, inspect everything.</h1>
+    <p>This page is both a complete guide and a live test console for <strong>/api/crawler</strong>. Type any query, run the real endpoint, inspect providers, open every result, review fetched page content, see freshness and verification, and inspect the exact JSON returned to your application.</p>
+    <div class="row"><a class="btn primary" href="#search">Start searching</a><button class="btn ghost" id="runQuickBtn">Run live smoke test</button></div>
+  </div>
+  <div class="heroCard">
+    <h3>What this console checks</h3>
+    <div class="guideItem" style="margin-top:10px"><b>1. Connectivity</b><span class="hint">Can this browser reach your deployed crawler route?</span></div>
+    <div class="guideItem" style="margin-top:10px"><b>2. Discovery</b><span class="hint">Which live public search surfaces returned results?</span></div>
+    <div class="guideItem" style="margin-top:10px"><b>3. Verification</b><span class="hint">Which result pages could be fetched and enriched?</span></div>
+    <div class="guideItem" style="margin-top:10px"><b>4. Relevance</b><span class="hint">How closely does each result match the query?</span></div>
+    <div class="guideItem" style="margin-top:10px"><b>5. Response contract</b><span class="hint">Can another AI app consume the JSON cleanly?</span></div>
+  </div>
+</section>
+
+<section id="search" class="grid section">
+  <aside class="card pad">
+    <h2>Search controls</h2>
+    <div class="hint">These controls map directly to the crawler API. The URL shown below is generated from them.</div>
+    <label for="query">Search anything</label>
+    <div class="searchbar"><input id="query" class="input" maxlength="500" placeholder="e.g. latest semiconductor policy in India" autocomplete="off"><button id="searchBtn" class="btn primary">Search</button></div>
+    <div class="split">
+      <div><label for="mode">Mode</label><select id="mode" class="select"><option value="auto">Auto</option><option value="deep">Deep</option><option value="gov">Government</option><option value="doc">Documents</option></select></div>
+      <div><label for="type">Type</label><select id="type" class="select"><option value="mixed">Mixed</option><option value="web">Web</option><option value="news">News</option><option value="video">Video</option><option value="gov">Government</option><option value="doc">Documents</option></select></div>
+    </div>
+    <label for="count">Results requested</label>
+    <div class="rangeRow"><input id="count" type="range" min="1" max="40" value="10"><div id="countVal" class="rangeVal">10</div></div>
+    <div class="hint">Hard API maximum: 40 results.</div>
+    <label>Search intelligence</label>
+    <div class="checks">
+      <label class="check"><input id="verify" type="checkbox" checked> Verify and enrich top results</label>
+      <label class="check"><input id="deep" type="checkbox"> Deep discovery / deeper verification</label>
+      <label class="check"><input id="ai" type="checkbox"> Allow Groq AI planning + reranking</label>
+      <label class="check"><input id="cc" type="checkbox"> Common Crawl historical check</label>
+    </div>
+    <label for="apiBase">Crawler endpoint</label>
+    <input id="apiBase" class="input" value="/api/crawler" spellcheck="false">
+    <div class="hint">Keep this as <code>/api/crawler</code> when index.html is deployed in the same Vercel project.</div>
+    <div style="margin-top:12px" class="row"><button id="copyUrl" class="btn small">Copy request URL</button><button id="openRaw" class="btn small ghost">Open raw API</button></div>
+    <label for="testQuery">Quick query presets</label>
+    <select id="testQuery" class="select"><option value="">Choose one…</option><option>latest AI news in India</option><option>Indian government startup schemes for students</option><option>India GST rates official</option><option>best explanation of transformer architecture</option><option>latest semiconductor policy India PDF</option><option>NASA Artemis latest update</option></select>
+  </aside>
+
+  <section class="card pad">
+    <div class="toolbar"><div class="toolbarLeft"><strong>Live response</strong><span id="connectionBadge" class="badge"><span class="dot"></span>Not tested</span><span id="requestBadge" class="badge">GET</span></div><div class="toolbarRight"><button id="clearBtn" class="btn small ghost">Clear</button><button id="exportBtn" class="btn small">Export JSON</button></div></div>
+    <div class="statusGrid" id="status">
+      <div class="stat"><b id="statLatency">—</b><span>Latency</span></div><div class="stat"><b id="statResults">—</b><span>Results returned</span></div><div class="stat"><b id="statVerified">—</b><span>Verified pages</span></div><div class="stat"><b id="statProviders">—</b><span>Providers responding</span></div>
+    </div>
+    <div style="margin-top:12px" class="console"><div><div class="hint" style="margin:0 0 6px">Live activity</div><div id="log" class="log"></div></div><div><div class="hint" style="margin:0 0 6px">Generated request</div><div id="requestCode" class="mono">Run a search to generate the request.</div></div></div>
+    <div style="margin-top:14px"><div class="toolbar"><div class="toolbarLeft"><strong>Provider status</strong></div><div class="toolbarRight"><span id="summaryBadge" class="badge">No response yet</span></div></div><div id="providerBox" class="guide"></div></div>
+    <div style="margin-top:18px"><div class="toolbar"><div class="toolbarLeft"><strong>Results</strong><span id="resultCountBadge" class="badge">0</span></div><div class="toolbarRight"><button class="filterBtn btn small active" data-filter="all">All</button><button class="filterBtn btn small" data-filter="verified">Verified</button><button class="filterBtn btn small" data-filter="news">News</button><button class="filterBtn btn small" data-filter="video">Video</button><button class="filterBtn btn small" data-filter="gov">Gov</button><button class="filterBtn btn small" data-filter="doc">Docs</button></div></div><div id="results" class="results"><div class="empty">No search has been run yet.</div></div></div>
+    <div style="margin-top:18px"><div class="toolbar"><strong>Raw JSON</strong><button id="copyJson" class="btn small">Copy JSON</button></div><pre id="json" class="mono" style="max-height:420px;min-height:100px;overflow:auto">No response yet.</pre></div>
+  </section>
+</section>
+
+<section id="tests" class="section">
+  <div class="card pad">
+    <div class="toolbar"><div><h2>Live test suite</h2><div class="hint">This sends real requests to your crawler. Tests are sequential to reduce accidental load.</div></div><div class="toolbarRight"><button id="suiteBtn" class="btn primary">Run all live tests</button></div></div>
+    <table class="testTable"><thead><tr><th>Test</th><th>Query</th><th>Mode</th><th>Type</th><th>Checks</th><th>Status</th></tr></thead><tbody id="testTable"></tbody></table>
+  </div>
+</section>
+
+<section id="guide" class="section">
+  <div class="card pad">
+    <h2>How to use this search correctly</h2>
+    <div class="guide">
+      <div class="guideItem"><b>Use natural questions</b><span class="hint">Write the actual information need, not just keywords. Example: “What are the latest central-government startup schemes available to Indian students?”</span></div>
+      <div class="guideItem"><b>Ask for freshness explicitly</b><span class="hint">Words like “latest”, “today”, “current”, “recent”, or a concrete date help the router prioritize fresh sources.</span></div>
+      <div class="guideItem"><b>Request official evidence</b><span class="hint">For law, GST, taxes, schemes, notifications, policy, and public administration, mention “official source” or use Government mode.</span></div>
+      <div class="guideItem"><b>Use Deep only when needed</b><span class="hint">Deep mode creates more query variants and verifies more top pages. It can increase latency and upstream requests.</span></div>
+      <div class="guideItem"><b>Use more results for discovery</b><span class="hint">1–5 is useful for a narrow lookup. 10–20 is a good research range. 30–40 is for broad source collection and comparison.</span></div>
+      <div class="guideItem"><b>Read extracted content</b><span class="hint">Verified HTML pages can expose extracted text in the result inspector. This is useful for feeding source text into an AI answer stage.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="api" class="section">
+  <div class="card pad">
+    <h2>API usage</h2>
+    <p class="hint">The crawler accepts GET or JSON POST. The examples below match the deployed endpoint contract.</p>
+    <h3>GET</h3>
+    <div class="code">/api/crawler?query=latest%20AI%20news%20in%20India&amp;count=20&amp;mode=auto&amp;type=mixed&amp;verify=true&amp;deep=false&amp;ai=auto</div>
+    <h3 style="margin-top:14px">POST JSON</h3>
+    <div class="code">{
+  "query": "latest AI news in India",
+  "count": 20,
+  "mode": "auto",
+  "type": "mixed",
+  "verify": true,
+  "deep": false,
+  "ai": "auto",
+  "commonCrawl": false
+}</div>
+    <h3 style="margin-top:14px">Returned result shape</h3>
+    <div class="code">{
+  "rank": 1,
+  "title": "…",
+  "url": "https://…",
+  "domain": "example.com",
+  "type": "web|news|video|gov|doc",
+  "source": "bing|duckduckgo|…",
+  "snippet": "…",
+  "publishedAt": "ISO-or-null",
+  "freshness": "last_24h|last_7d|…",
+  "verified": true,
+  "httpStatus": 200,
+  "contentType": "text/html",
+  "trust": 0.6,
+  "extractedText": "…"
+}</div>
+  </div>
+</section>
+
+<div class="footer">ArixAI Live Search Console · Designed to test the real /api/crawler endpoint. Keyless discovery is best-effort because public web surfaces can rate-limit or change markup.</div>
+</main>
+<div id="toast" class="toast"></div>
+<script>
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const state = {response:null, filter:'all', busy:false, tests:[]};
+  const els = {
+    query:$('query'),mode:$('mode'),type:$('type'),count:$('count'),countVal:$('countVal'),verify:$('verify'),deep:$('deep'),ai:$('ai'),cc:$('cc'),apiBase:$('apiBase'),
+    searchBtn:$('searchBtn'),runQuickBtn:$('runQuickBtn'),copyUrl:$('copyUrl'),openRaw:$('openRaw'),testQuery:$('testQuery'),connectionBadge:$('connectionBadge'),requestBadge:$('requestBadge'),
+    statLatency:$('statLatency'),statResults:$('statResults'),statVerified:$('statVerified'),statProviders:$('statProviders'),log:$('log'),requestCode:$('requestCode'),providerBox:$('providerBox'),
+    summaryBadge:$('summaryBadge'),results:$('results'),resultCountBadge:$('resultCountBadge'),json:$('json'),copyJson:$('copyJson'),clearBtn:$('clearBtn'),exportBtn:$('exportBtn'),suiteBtn:$('suiteBtn'),testTable:$('testTable'),toast:$('toast')
+  };
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  function toast(msg){els.toast.textContent=msg;els.toast.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>els.toast.classList.remove('show'),2600)}
+  function log(msg,kind=''){const d=document.createElement('div');d.className=kind;d.textContent='['+new Date().toLocaleTimeString()+'] '+msg;els.log.appendChild(d);els.log.scrollTop=els.log.scrollHeight}
+  function setBusy(b){state.busy=b;els.searchBtn.disabled=b;els.suiteBtn.disabled=b;els.runQuickBtn.disabled=b;els.searchBtn.textContent=b?'Searching…':'Search'}
+  function buildParams(overrides={}){
+    const p=new URLSearchParams();
+    p.set('query',overrides.query ?? els.query.value.trim());
+    p.set('count',String(overrides.count ?? Number(els.count.value)));
+    p.set('mode',overrides.mode ?? els.mode.value);
+    p.set('type',overrides.type ?? els.type.value);
+    p.set('verify',String(overrides.verify ?? els.verify.checked));
+    p.set('deep',String(overrides.deep ?? els.deep.checked));
+    p.set('ai',overrides.ai ?? (els.ai.checked?'true':'false'));
+    p.set('commonCrawl',String(overrides.commonCrawl ?? els.cc.checked));
+    return p;
+  }
+  function endpointUrl(overrides={}){
+    const base=els.apiBase.value.trim()||'/api/crawler';
+    const url=base.includes('?')?base+'&'+buildParams(overrides).toString():base+'?'+buildParams(overrides).toString();
+    return new URL(url,window.location.href).href;
+  }
+  function relevance(r,query){
+    const q=String(query||'').toLowerCase().replace(/[^\p{L}\p{N}\s]/gu,' ').split(/\s+/).filter(w=>w.length>2);
+    if(!q.length)return 50;
+    const title=String(r.title||'').toLowerCase(), snippet=String(r.snippet||'').toLowerCase(), body=String(r.extractedText||'').slice(0,5000).toLowerCase();
+    let hit=0;
+    q.forEach(t=>{if(title.includes(t))hit+=4;else if(snippet.includes(t))hit+=2;else if(body.includes(t))hit+=1});
+    const base=Math.min(100,Math.round((hit/(q.length*4))*100));
+    const trust=Math.round(Number(r.trust||0)*8);
+    const fresh=r.freshness==='last_24h'?8:r.freshness==='last_7d'?5:0;
+    const verified=r.verified?7:0;
+    return Math.max(0,Math.min(100,base+trust+fresh+verified));
+  }
+  function relevantLabel(score){if(score>=78)return 'Strong match';if(score>=52)return 'Likely relevant';if(score>=30)return 'Partial match';return 'Weak match'}
+  function applyFilter(results){return results.filter(r=>{switch(state.filter){case'verified':return r.verified;case'news':return r.type==='news';case'video':return r.type==='video';case'gov':return r.type==='gov';case'doc':return r.type==='doc';default:return true}})}
+  function renderProviders(obj){
+    const entries=Object.entries(obj||{});
+    els.providerBox.innerHTML=entries.length?entries.map(([name,v])=>`<div class="guideItem"><b><span class="dot ${v.failed?'warn':'good'}"></span>${esc(name)}</b><span class="hint">${v.ok||0} successful · ${v.failed||0} failed · ${v.results||0} discovered</span></div>`).join(''):'<div class="empty">Provider statistics were not returned.</div>';
+  }
+  function renderResults(){
+    const data=state.response?.results||[];const filtered=applyFilter(data);els.resultCountBadge.textContent=filtered.length+' shown / '+data.length+' total';
+    if(!filtered.length){els.results.innerHTML='<div class="empty">No results match this filter.</div>';return}
+    els.results.innerHTML=filtered.map((r,i)=>{
+      const score=relevance(r,state.response?.query||els.query.value);const body=r.extractedText?`<div class="details" id="d-${i}"><div class="hint">Extracted page content</div><div class="content">${esc(r.extractedText)}</div></div>`:'';
+      const published=r.publishedAt?new Date(r.publishedAt).toLocaleString(): 'No publication date detected';
+      return `<article class="result">
+        <div class="resultHead"><div class="row" style="align-items:flex-start"><div class="rank">#${esc(r.rank)}</div><div><h3 class="resultTitle">${esc(r.title||'Untitled')}</h3><div class="resultMeta">${esc(r.domain||'')} · ${esc(r.type||'web')} · ${esc(r.source||'')} · ${esc(r.freshness||'unknown')} · trust ${Number(r.trust||0).toFixed(2)}</div></div></div><span class="badge"><span class="dot ${r.verified?'good':'warn'}"></span>${r.verified?'Verified':'Unverified'}</span></div>
+        <div class="snippet">${esc(r.snippet||'No snippet returned.')}</div>
+        <div class="relevance"><div class="relText"><span>${relevantLabel(score)}</span><span>${score}% heuristic match</span></div><div class="bar"><i style="width:${score}%"></i></div></div>
+        <div class="hint" style="margin-top:8px">Published: ${esc(published)}${r.httpStatus?' · HTTP '+esc(r.httpStatus):''}${r.contentType?' · '+esc(r.contentType):''}</div>
+        <div class="resultActions"><a class="btn small" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">Open website</a>${r.extractedText?`<button class="btn small ghost inspect" data-id="d-${i}">Inspect content</button>`:''}<button class="btn small ghost copyResult" data-url="${esc(r.url)}">Copy URL</button></div>
+        ${body}
+      </article>`;
+    }).join('');
+    els.results.querySelectorAll('.inspect').forEach(b=>b.addEventListener('click',()=>{const d=$(b.dataset.id);if(d)d.classList.toggle('open')}));
+    els.results.querySelectorAll('.copyResult').forEach(b=>b.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(b.dataset.url);toast('URL copied')}catch{toast('Clipboard unavailable')}}));
+  }
+  function renderResponse(data,latencyOverride){
+    state.response=data;els.json.textContent=JSON.stringify(data,null,2);
+    const latency=data.latencyMs??latencyOverride??0;els.statLatency.textContent=latency+' ms';els.statResults.textContent=data.returnedResults??data.results?.length??0;
+    const verified=(data.results||[]).filter(r=>r.verified).length;els.statVerified.textContent=verified;
+    const providers=Object.values(data.providers||{});els.statProviders.textContent=providers.filter(x=>(x.ok||0)>0).length;
+    renderProviders(data.providers);
+    els.summaryBadge.textContent=data.ok?'Search completed':'Search error';
+    els.connectionBadge.innerHTML=`<span class="dot ${data.ok?'good':'bad'}"></span>${data.ok?'Connected':'Error'}`;
+    renderResults();
+  }
+  async function doSearch(overrides={},internal=false){
+    if(state.busy&&!internal)return null;
+    const query=String(overrides.query??els.query.value).trim();if(query.length<2){toast('Enter at least 2 characters');els.query.focus();return null}
+    if(!internal)setBusy(true);els.log.innerHTML='';
+    const url=endpointUrl(overrides);els.requestCode.textContent=url;els.requestBadge.textContent=(overrides.method||'GET').toUpperCase();
+    log('Starting live request.','');log('Query: '+query);log('Endpoint: '+url);log('Waiting for crawler response…');
+    const started=performance.now();
+    try{
+      const res=await fetch(url,{method:'GET',headers:{accept:'application/json'}});const elapsed=Math.round(performance.now()-started);log('HTTP '+res.status+' received in '+elapsed+' ms',res.ok?'ok':'bad');
+      const data=await res.json();
+      if(data.ok){log('Crawler completed: '+(data.returnedResults||0)+' results.','ok');log('Verification performed: '+(data.searchPlan?.verificationPerformed||0),'ok');log('Groq used: '+(data.groqUsed?'yes':'no'));}
+      else log('Crawler returned an error: '+(data.error||'UNKNOWN'),'bad');
+      renderResponse(data,elapsed);return data;
+    }catch(err){
+      const data={ok:false,error:'FRONTEND_REQUEST_FAILED',message:err?.message||String(err)};log('Request failed: '+data.message,'bad');renderResponse(data,Math.round(performance.now()-started));return data;
+    }finally{if(!internal)setBusy(false)}
+  }
+  function clearAll(){state.response=null;els.json.textContent='No response yet.';els.results.innerHTML='<div class="empty">No search has been run yet.</div>';els.log.innerHTML='';els.providerBox.innerHTML='';els.summaryBadge.textContent='No response yet';els.connectionBadge.innerHTML='<span class="dot"></span>Not tested';els.requestCode.textContent='Run a search to generate the request.';els.statLatency.textContent=els.statResults.textContent=els.statVerified.textContent=els.statProviders.textContent='—';els.resultCountBadge.textContent='0'}
+  async function copy(text){try{await navigator.clipboard.writeText(text);toast('Copied to clipboard')}catch{toast('Clipboard unavailable')}}
+  function exportJson(){if(!state.response){toast('Run a search first');return}const blob=new Blob([JSON.stringify(state.response,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='arixai-crawler-response.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),500)}
+  const tests=[
+    {name:'General web',query:'how does a transformer work in artificial intelligence',mode:'auto',type:'web',checks:['response','results']},
+    {name:'Latest news',query:'latest AI news in India',mode:'auto',type:'news',checks:['response','freshness']},
+    {name:'Government',query:'Indian government startup schemes for students',mode:'gov',type:'gov',checks:['response','gov']},
+    {name:'Videos',query:'transformer architecture explained',mode:'auto',type:'video',checks:['response','video']},
+    {name:'Documents',query:'latest semiconductor policy India PDF',mode:'doc',type:'doc',checks:['response','documents']},
+    {name:'Deep research',query:'India semiconductor ecosystem policy manufacturing investment',mode:'deep',type:'mixed',checks:['response','results','verification']}
+  ];
+  function renderTestTable(){els.testTable.innerHTML=tests.map((t,i)=>`<tr><td><strong>${esc(t.name)}</strong></td><td>${esc(t.query)}</td><td>${esc(t.mode)}</td><td>${esc(t.type)}</td><td>${esc(t.checks.join(', '))}</td><td id="ts-${i}"><span class="badge">Not run</span></td></tr>`).join('')}
+  async function runSuite(){
+    if(state.busy)return;state.busy=true;setBusy(true);els.log.innerHTML='';log('Starting live test suite.');
+    for(let i=0;i<tests.length;i++){
+      const t=tests[i],cell=$('ts-'+i);cell.innerHTML='<span class="badge"><span class="dot warn"></span>Running</span>';log('Test '+(i+1)+'/'+tests.length+': '+t.name);
+      const data=await doSearch({query:t.query,mode:t.mode,type:t.type,count:t.name==='Deep research'?12:8,verify:true,deep:t.mode==='deep',ai:'auto',commonCrawl:false},true);
+      let ok=Boolean(data?.ok);let note='response';
+      if(ok&&t.checks.includes('results')){ok=(data.results||[]).length>0;note='results'}
+      if(ok&&t.checks.includes('freshness')){ok=(data.results||[]).some(r=>r.publishedAt||r.freshness!=='unknown');note='freshness'}
+      if(ok&&t.checks.includes('gov')){ok=(data.results||[]).some(r=>r.type==='gov'||/\.gov\.in\b/i.test(r.url||''));note='gov results'}
+      if(ok&&t.checks.includes('video')){ok=(data.results||[]).some(r=>r.type==='video'||/youtube\.com|youtu\.be/i.test(r.url||''));note='video results'}
+      if(ok&&t.checks.includes('documents')){ok=(data.results||[]).some(r=>r.type==='doc'||/\.pdf(?:\?|$)/i.test(r.url||''));note='document results'}
+      if(ok&&t.checks.includes('verification')){ok=(data.results||[]).some(r=>r.verified);note='verified results'}
+      cell.innerHTML=`<span class="badge"><span class="dot ${ok?'good':'bad'}"></span>${ok?'PASS':'FAIL'} · ${esc(note)}</span>`;
+    }
+    log('Test suite finished.','ok');setBusy(false);
+  }
+  els.count.addEventListener('input',()=>els.countVal.textContent=els.count.value);
+  els.testQuery.addEventListener('change',()=>{if(els.testQuery.value){els.query.value=els.testQuery.value;window.location.hash='search'}});
+  els.searchBtn.addEventListener('click',()=>doSearch());els.query.addEventListener('keydown',e=>{if(e.key==='Enter')doSearch()});
+  els.runQuickBtn.addEventListener('click',()=>{els.query.value='latest AI news in India';els.type.value='mixed';els.mode.value='auto';els.count.value='8';els.countVal.textContent='8';doSearch()});
+  els.copyUrl.addEventListener('click',()=>copy(endpointUrl()));els.openRaw.addEventListener('click',()=>window.open(endpointUrl(),'_blank','noopener,noreferrer'));
+  els.copyJson.addEventListener('click',()=>state.response&&copy(JSON.stringify(state.response,null,2)));
+  els.clearBtn.addEventListener('click',clearAll);els.exportBtn.addEventListener('click',exportJson);els.suiteBtn.addEventListener('click',runSuite);
+  document.querySelectorAll('.filterBtn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filterBtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.filter=b.dataset.filter;renderResults()}));
+  renderTestTable();
+  window.ArixSearchConsole={search:doSearch,buildUrl:endpointUrl,getState:()=>state};
+})();
+</script>
+</body>
+</html>
